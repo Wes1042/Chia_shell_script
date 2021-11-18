@@ -42,13 +42,17 @@ echo -e "\n\n"
 }
 
 find_space(){
-#space=$(lsblk -o name,size,mountpoint -lpn |grep "/dev/sd")
-total_memory=$(df /mnt/chia/ |grep dev | awk '{print $2}')
-
+ total_memory=$(df /mnt/chia/ |grep dev | awk '{print $2}')
 used_memory=$(df /mnt/chia/ |grep dev | awk '{print $3}')
-available_memory=$(df /mnt/chia/ |grep dev| awk '{print $4}')
+available_memory=$(df /mnt/chia/ |grep dev | awk '{print $4}')
 
+GbTotal=$(($total_memory /1024/1024 |bc))
+echo "$GbTotal"
 echo "$available_memory"
+Gbavalable=$(($available_memory / 1024/1024))
+echo "available human readable : $Gbavalable "
+
+# perhaps have a input where it holds where you want to hold the temp and plots folder
 #create flag / option that the user can input and will store it here.
 # perhaps have a input where it holds where you want to hold the temp and plots folder
 }

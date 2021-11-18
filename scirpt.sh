@@ -18,7 +18,7 @@ find_memory(){
 mmemory=($(grep MemTotal /proc/meminfo |awk '{ print $2}'))
 echo "This device has $memory KB of memory"
 echo -e "\nKB\t\t\tMB\t\t\tGB\t\tTB"
-
+# calculate from KiB -> TiB
 for (( i=0; i<=3; i++ ))
 do
   printf '%s\t\t%s' $memory
@@ -31,6 +31,7 @@ memoryib=$(echo "scale=3;$memoryib/1.024" |bc )
 echo -e "\n\nThis device has $memoryib KiB of memory"
 echo -e "\nKiB\t\t\tMiB\t\t\tGiB\t\t\tTiB"
 
+# calculate from KiB -> TiB
 for ((i=0; i<=3; i++))
 do
   printf '%s\t%s\t' $memoryib
@@ -41,6 +42,13 @@ echo -e "\n\n"
 }
 
 find_space(){
-lsblk -o name,size,mountpoint -lpn |grep "/dev/sd"
+#space=$(lsblk -o name,size,mountpoint -lpn |grep "/dev/sd")
+total_memory=$(df /mnt/chia/ |grep dev | awk '{print $2}')
+
+used_memory=$(df /mnt/chia/ |grep dev | awk '{print $3}')
+available_memory=$(df /mnt/chia/ |grep dev| awk '{print $4}')
+
+echo "$available_memory"
+#create flag / option that the user can input and will store it here.
 # perhaps have a input where it holds where you want to hold the temp and plots folder
 }

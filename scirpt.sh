@@ -1,7 +1,7 @@
-#bin/bash
+#!/bin/bash
 
 Chia_command(){
-chia=(("chia plots create -k $kValue -b $kRAM -r kThreads-t $kTemp -d $kfinal"))
+chia=$(("chia plots create -k $kValue -b $kRAM -r kThreads-t $kTemp -d $kfinal"))
 }
 
 find_cpu(){
@@ -57,10 +57,5 @@ echo "available human readable : $Gbavalable "
 # perhaps have a input where it holds where you want to hold the temp and plots folder
 }
 
-
-Parallel_plotting(){
-
-
-}
 
 # maybe have a file where all the preset setting are set so you can use them again

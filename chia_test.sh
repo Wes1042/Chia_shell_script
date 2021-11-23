@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 echo "Starting values"
 Threads=0
 Memory=0
@@ -16,6 +16,9 @@ Threads=$(( ($(lscpu | awk '/^Socket\(s\)/{ print $2 }') * $(lscpu | awk '/^Core
 #echo "Cores   = $Cores" ; echo "Threads = $Threads"
 
 }
+
+
+x = find_memory()
 
 find_memory(){
 # Finds memeory in KB

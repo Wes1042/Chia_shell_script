@@ -1,19 +1,27 @@
-#bin/bash
+!/bin/bash
+echo "Starting values"
+Threads=0
+Memory=0
+echo $Threads 
+echo $Memory
 
 Chia_command(){
-chia=(("chia plots create -k $kValue -b $kRAM -r kThreads-t $kTemp -d $kfinal"))
+#chia=(("chia plots create -k $kValue -b $kRAM -r kThreads-t $kTemp -d $kfinal"))
+echo "test"
 }
 
 find_cpu(){
 # Finds cpu & amount of threads and will hold them in variables for later use
 Threads=$(( ($(lscpu | awk '/^Socket\(s\)/{ print $2 }') * $(lscpu | awk '/^Core\(s\) per socket/{ print $4 }')) * $(lscpu |awk '/^Thread\(s\) per core/{ print $4 }') ))
-echo "Cores   = $Cores" ; echo "Threads = $Threads"
+#echo "Cores   = $Cores" ; echo "Threads = $Threads"
 
 }
 
 find_memory(){
 # Finds memeory in KB
-mmemory=($(grep MemTotal /proc/meminfo |awk '{ print $2}'))
+memory=($(grep MemTotal /proc/meminfo |awk '{ print $2}'))
+Memory=($(grep MemTotal /proc/meminfo |awk '{ print $2 }'));Memory=$(echo "scale=3;$Memory/1024" |bc)
+
 echo "This device has $memory KB of memory"
 echo -e "\nKB\t\t\tMB\t\t\tGB\t\tTB"
 # calculate from KiB -> TiB
@@ -56,11 +64,9 @@ echo "available human readable : $Gbavalable "
 #create flag / option that the user can input and will store it here.
 # perhaps have a input where it holds where you want to hold the temp and plots folder
 }
+find_memory
+find_cpu
+echo "ending values"
+echo $Threads
+echo $Memory
 
-
-Parallel_plotting(){
-
-
-}
-
-# maybe have a file where all the preset setting are set so you can use them again

@@ -7,7 +7,7 @@ chia_generator(){
     # threads=$2
     # temp=$3
     # final=$4
-    echo "chia plots create -k 32 -b "$1" -r "$2" -t "$3" -d "$4""
+    echo chia plots create -k 32 -b "$1" -r "$2" -t "$3" -d "$4"
 }
 
 #Returns number of threads of the cpu
@@ -17,6 +17,17 @@ find_cpu_threads(){
     threads=( "$cores" * "$threads_per_core")
     # threads= (Sockets X Cores per socket) X threads_per_core 
     echo "$threads" 
+}
+
+plotting_threads(){
+    plots=("$plots_per_space")
+    echo "hahahah $plots"
+    threads=("$find_cpu_threads")
+
+    #plotting_threads=$(echo "$threads"  "$plots" |awk '{print $2 / $1}')
+    plotting_threads=( "$plots" / "$threads" )
+    echo "$plotting_threads"
+
 }
 # Returns total memory
 find_total_memory(){
@@ -30,8 +41,8 @@ find_total_memory(){
 plotting_memory(){
     total_memory=$(find_total_memory)
     plots=$(plots_per_space)
-    plotting_memory=$(echo "$total_memory" "$plots" | awk '{print $1 / $2}')
-    #plotting_memory=$(("$total_memory" /"$plots" ))
+    plotting_memory=$(echo "$total_memory $plots" | awk '{print $1 / $2}')
+    #plotting_memory=$(echo "scale=3; $total_memory / $plots" |bc)
     echo "$plotting_memory"
 }
 
@@ -53,6 +64,7 @@ plots_per_space(){
 }
 
 
+
 #Finds available space based on drive location
 available_space(){
     available_space=$(df /mnt/chia/ |grep dev |awk '{print $3}')
@@ -72,9 +84,14 @@ dest_location(){
     echo $final
 }
 
-#find_total_memory
+find_total_memory
 available_space
 plots_per_space
+plotting_threads
 plotting_memory
-#plotting_memory
-#chia_generator "" "" "" ""
+
+
+temp_location
+dest_location
+
+chia_generator "$plotting_memory" "$plotting_threads" "$temp_location" "$dest_location"
